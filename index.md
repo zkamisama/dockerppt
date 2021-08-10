@@ -1,76 +1,80 @@
-title: 前端基于GitLab CI/CD 自动化构建分享
+title: 前端基于 GitLab CI/CD 自动化构建分享
 speaker: 西子湖畔
 css: ['https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css', 'custom.css']
 js: 
-    - custom.js
+  - custom.js
 prismTheme: 'okaidia'
-plugins:
-    - echarts
+plugins: 
+  - echarts
 
 <slide class="bg-black-blue aligncenter" image="https://crm-public.hzdahongniang.com/FpWRT9juO0iO9om-HxQX23GObr2o.jpg .dark">
 
-# 前端基于GitLab CI/CD 自动化构建分享  {.text-landing.text-shadow}
+# 前端基于 GitLab CI/CD 自动化构建分享 {.text-landing.text-shadow}
 
 By hxz {.text-intro}
 
 <slide class="bg-black-blue aligncenter"  :class="size-80">
 
 :::{.content-center}
+
 ### 目录
+
 ---
 
-* Docker 入门指南 {.animated.fadeInUp}
-* Dockerfile 编写 {.animated.fadeInUp.delay-400}
-* GitLab Runner CI/CD 自动化构建 {.animated.fadeInUp.delay-800}
+- Docker 入门指南 {.animated.fadeInUp}
+- Dockerfile 编写 {.animated.fadeInUp.delay-400}
+- GitLab Runner CI/CD 自动化构建 {.animated.fadeInUp.delay-800}
 
 <slide class="bg-black-blue slide-top">
 
-#### Docker是什么
+#### Docker 是什么
 
 ---
+
 :::flexblock
 Docker 是允许开发人员，系统管理员等轻松地在沙盒（又称容器）中部署其应用程序以在主机操作系统上运行的工具。 {.text-subtitle .animated.fadeInUp}
 :::
+
 ---
 
 #### 为什么要用 Docker {.animated.fadeInUp.delay-400}
 
 :::flexblock
 
-使用Docker的主要好处是它可以打包代码及其所有依赖项，因此无论计算环境如何，应用程序都可以快速可靠地运行。{.animated.fadeInUp.delay-800}
+使用 Docker 的主要好处是它可以打包代码及其所有依赖项，因此无论计算环境如何，应用程序都可以快速可靠地运行。{.animated.fadeInUp.delay-800}
 
 通过这种解耦，可以轻松且一致地部署基于容器的应用程序，而不管应用程序将部署在何处：云服务器，内部公司服务器或个人电脑。{ .animated.fadeInUp.delay-1200 .mb-20}
 
-  -   **更快速的启动时间** 
-  -   **一致的运行环境** 
-  -   **持续交付和部署** 
-  -   **更轻松的迁移** 
-  -   **更轻松的维护和扩展** 
-      { .animated.fadeInUp.delay-1400 } 
+- **更快速的启动时间**
+- **一致的运行环境**
+- **持续交付和部署**
+- **更轻松的迁移**
+- **更轻松的维护和扩展**
+  { .animated.fadeInUp.delay-1400 }
 
 :::
 
 <slide class="bg-black-blue slide-top">
 
-#### Docker基本概念 {.bounce.mb-20}
+#### Docker 基本概念 {.bounce.mb-20}
 
 1. 镜像(Image) {.subtitle .fadeInUp}
-    :::flexblock {.pmb-20 }
-    :Docker镜像是一个特殊的文件系统(相当于Linux的root文件系统)，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。:{ onclick="showExtra('extra number1')"}  
-    :镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。:{.extra.number1 }
-    :::
-2. 容器(Container){.fadeInUp}   
-    :::flexblock {.pmb-20}
-    :镜像和容器的关系，就像是面向对象程序设计中的`类`{.inline-code}和`实例`{.inline-code}一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。:{ onclick="showExtra('extra number2')"}  
-    
-    :每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为容器存储层。容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。:{.extra.number2}
+   :::flexblock {.pmb-20 }
+   :Docker 镜像是一个特殊的文件系统(相当于 Linux 的 root 文件系统)，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。:{ onclick="showExtra('extra number1')"}  
+   :镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。:{.extra.number1 }
+   :::
+2. 容器(Container){.fadeInUp}  
+   :::flexblock {.pmb-20}
+   :镜像和容器的关系，就像是面向对象程序设计中的`类`{.inline-code}和`实例`{.inline-code}一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。:{ onclick="showExtra('extra number2')"}
 
-    :容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用  数据卷（Volume） 、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高:{.extra.number2}
-    :::
-3. 仓库(Repository){.fadeInUp}    
-    :::flexblock {.pmb-20}
-    :镜像构建完成后，可以很容易的在当前宿主上运行，但是，如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务， Docker Registry 就是这样的服务。:
+   :每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为容器存储层。容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。:{.extra.number2}
 
+   :容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume） 、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高:{.extra.number2}
+   :::
+
+3. 仓库(Repository){.fadeInUp}  
+   :::flexblock {.pmb-20}
+   :镜像构建完成后，可以很容易的在当前宿主上运行，但是，如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务， Docker Registry 就是这样的服务。:
 
 <slide class="slide-top bg-black-blue">
 
@@ -80,7 +84,7 @@ Docker 是允许开发人员，系统管理员等轻松地在沙盒（又称容�
 
 ```bash{.zoomIn.delay-400}
 # 从 Docker 镜像仓库获取镜像 仓库地址默认Docker Hub （docker.io） 例: 拉取node12镜像 docker pull node:12   可以在hub.docker.com公共镜像仓库内查找
-$ docker pull [OPTIONS] [Docker Registry 地址[:端口号]/]仓库名[:标签]   
+$ docker pull [OPTIONS] [Docker Registry 地址[:端口号]/]仓库名[:标签]
 # 查看本地镜像列表 可查看镜像的 仓库名、标签、镜像 ID、创建时间 以及 所占用的空间
 $ docker images [OPTIONS]
 # 构建镜像 例 docker build -t build_image_name .
@@ -98,7 +102,7 @@ $ docker image prune
 # -i 交互式操作 -t 终端 -d: 后台运行容器 --rm 容器退出时删除 -p 指定端口映射 -v 数据卷映射
 $ docker run [OPTIONS] IMAGE [CMD]
 # 在容器使用后台模式时 可以用此命令进入容器操作 例 docker exec -it node12 /bin/bash
-$ docker exec [OPTIONS] CONTAINER 
+$ docker exec [OPTIONS] CONTAINER
 # 查看正在运行的容器(container)
 $ docker ps
 # 启动一个或多个容器 例 docker start mydemo
@@ -108,7 +112,7 @@ $ docker stop [OPTIONS] CONTAINER [CONTAINER...]
 # 重启容器
 $ docker restart [OPTIONS] CONTAINER [CONTAINER...]
 # 删除容器 例 docker rm mydemo
-$ docker rm [OPTIONS] CONTAINER [CONTAINER...] 
+$ docker rm [OPTIONS] CONTAINER [CONTAINER...]
 ```
 
 <slide class="slide-top bg-black-blue">
@@ -118,19 +122,18 @@ $ docker rm [OPTIONS] CONTAINER [CONTAINER...]
 Dockerfile 是一个文本文件，其内包含了一条条的 指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。{.fadeInRight}
 
 - Dockerfile 常用指令{.fadeInRight}
-    - **FROM**  `FROM <image>:<tag>`指定基础镜像
-    - **WORKDIR** `WORKDIR <工作目录路径>` 指定工作目录（当前目录），以后各层的当前目录就被改为指定的目录，如该目录不存在，会自动创建目录
-    - **RUN**  `RUN <CMD>` 执行命令 
-    - **COPY** `COPY <源路径> <目标路径>` 复制文件
-    - **ADD**  `ADD <源路径> <目标路径>` 更高级的复制文件 源路径可以是URL 如果是tar压缩文件 复制的同时会自动解压到目标路径
-    - **CMD** `CMD ["参数1", "参数2"...]` 容器启动命令 指定默认的容器主进程 守护进程监听的默认进程 **该进程结束容器会退出**
-    - **ENTRYPOINT** `ENTRYPOINT ["参数"]` 指定容器启动程序及参数与CMD一样 可以执行预处理脚本
-    - **ENV** `ENV <key> <value> | <key1>=<value1> <key2>=<value2>` 设置环境变量
-    - **ARG** `ARG <参数名>[=<默认值>]` 构建参数 和ENV的效果一样，都是设置环境变量 但在将来容器运行时是不存在的 只在构建镜像时存在
-    - **EXPOSE** `EXPOSE <端口1>  [<端口2>...]` 暴露端口 声明容器运行时提供服务的端口
-    - **LABEL** `LABEL <key>=<value> <key>=<value> ...` 给镜像添加元数据 如 申明镜像的作者、文档地址
+  - **FROM** `FROM <image>:<tag>`指定基础镜像
+  - **WORKDIR** `WORKDIR <工作目录路径>` 指定工作目录（当前目录），以后各层的当前目录就被改为指定的目录，如该目录不存在，会自动创建目录
+  - **RUN** `RUN <CMD>` 执行命令
+  - **COPY** `COPY <源路径> <目标路径>` 复制文件
+  - **ADD** `ADD <源路径> <目标路径>` 更高级的复制文件 源路径可以是 URL 如果是 tar 压缩文件 复制的同时会自动解压到目标路径
+  - **CMD** `CMD ["参数1", "参数2"...]` 容器启动命令 指定默认的容器主进程 守护进程监听的默认进程 **该进程结束容器会退出**
+  - **ENTRYPOINT** `ENTRYPOINT ["参数"]` 指定容器启动程序及参数与 CMD 一样 可以执行预处理脚本
+  - **ENV** `ENV <key> <value> | <key1>=<value1> <key2>=<value2>` 设置环境变量
+  - **ARG** `ARG <参数名>[=<默认值>]` 构建参数 和 ENV 的效果一样，都是设置环境变量 但在将来容器运行时是不存在的 只在构建镜像时存在
+  - **EXPOSE** `EXPOSE <端口1> [<端口2>...]` 暴露端口 声明容器运行时提供服务的端口
+  - **LABEL** `LABEL <key>=<value> <key>=<value> ...` 给镜像添加元数据 如 申明镜像的作者、文档地址
     {.fadeInRight}
-
 
 <slide class="slide-top bg-black-blue relative">
 
@@ -138,13 +141,13 @@ Dockerfile 是一个文本文件，其内包含了一条条的 指令(Instructio
 
 ```docker{.fadeInRight}
 # 以nginx镜像为基础构建
-FROM nginx:alpine 
+FROM nginx:alpine
 # 设置工作目录/app
 WORKDIR /app
 # 复制源码文件到当前目录  即/app/index.md
 COPY index.md .
 # 安装node环境支持
-RUN apk add --no-cache nodejs npm 
+RUN apk add --no-cache nodejs npm
 # 安装全局依赖
 RUN npm config set registry https://registry.npm.taobao.org && npm i -g nodeppt
 # 打包
@@ -158,19 +161,19 @@ CMD ["nginx", "-g", "daemon off;"]
 ---
 
 ###### 如何构建优秀的镜像(又快又小){.fadeInRight}
-  - 使用更加精简的基础镜像{.fadeInUp}
-    | Alpine | Debian | Ubuntu |
-    | :----------- | :------------: | ------------: |
-    | 5.6MB   |   70M   |   79M |
-  - 减少镜像构建层数{.fadeInUp onClick="showModal('subImageLayer', this)"}
-  - 清理缓存，清理中间产物（必须在同层清理）{.fadeInUp}
-  - 配置dockerignore
-  - 多段构建{.fadeInUp onClick="showModal('multistageBuild', this)"}
 
+- 使用更加精简的基础镜像{.fadeInUp}
+  | Alpine | Debian | Ubuntu |
+  | :----------- | :------------: | ------------: |
+  | 5.6MB | 70M | 79M |
+- 减少镜像构建层数{.fadeInUp onClick="showModal('subImageLayer', this)"}
+- 清理缓存，清理中间产物（必须在同层清理）{.fadeInUp}
+- 配置 dockerignore
+- 多段构建{.fadeInUp onClick="showModal('multistageBuild', this)"}
 
 ```docker{#subImageLayer onClick="hideModel(this)"}
 # 以nginx镜像为基础构建
-FROM nginx:alpine 
+FROM nginx:alpine
 # 设置工作目录/app
 WORKDIR /app
 
@@ -212,9 +215,6 @@ COPY --from=builder /app/dist/  /usr/share/nginx/html/
 
 CMD ["nginx", "-g", "daemon off;"]
 ```
-
-  
-
 
 <slide class="slide-top bg-black-blue">
 
@@ -288,111 +288,108 @@ $ docker run --rm -it -p 8888:80 share_docker_demo
 
 !![figure](https://crm-public.hzdahongniang.com/FuUwfPhvA_91IbEXO8IjKPui5ODc.png .size-80.aligncenter.shadow)
 
-
 <slide class="bg-black-blue aligncenter "  >
 >目前前端项目上线的流程
 > {.text-quote}
 
-
 <slide class="bg-black-blue aligncenter"  >
 
 #### 传统方式{.title .lightSpeedIn}
-!![figure](https://crm-public.hzdahongniang.com/FvYM3DhUNJBVr0kpX08moTyiTNH-.png .lightSpeedIn)
 
+!![figure](https://crm-public.hzdahongniang.com/FvYM3DhUNJBVr0kpX08moTyiTNH-.png .lightSpeedIn)
 
 <slide class="bg-black-blue aligncenter"  >
 
-####  DevOps{.title .lightSpeedIn}
+#### DevOps{.title .lightSpeedIn}
 
 :::{.centerBox}
 
 !![](https://crm-public.hzdahongniang.com/FsgM0qVq8uN-c39-3gcgVBNiYCdN.png .lightSpeedIn )
 
-----
+---
 
 - 持续集成(Continuous Integration)
-- 持续交付(Continuous Delivery) 
+- 持续交付(Continuous Delivery)
 - 持续部署(Continuous Deployment)
-{.lightSpeedIn}
+  {.lightSpeedIn}
 
 :::
 
 <slide class="bg-black-blue aligncenter"  >
 
 #### 持续集成(Continuous Integration){.title .lightSpeedIn}
+
 !![](https://crm-public.hzdahongniang.com/FvezCacCLVp752CnkgC4vxo5ylk-.jpg .lightSpeedIn)
 
-----
+---
 
 - 持续集成是一种软件开发实践，每次集成都通过自动化的构建（包括编译，发布，自动化测试）来验证，从而尽早地发现集成错误。{.lightSpeedIn}
 
 <slide class="bg-black-blue aligncenter"  >
 
 #### 持续交付(Continuous Delivery){.title .lightSpeedIn}
+
 !![](https://crm-public.hzdahongniang.com/FgG5wFOFT6AfxoUUGtGV7jQ1uU29.jpg .lightSpeedIn )
 
-----
+---
 
 - 持续交付在持续集成的基础上，将集成后的代码部署到更贴近真实运行环境的 `类生产环境` 中。比如，我们完成单元测试后，可以把代码部署到连接数据库的 `预发布` 环境中更多的测试。如果代码没有问题，可以继续手动部署到生产环境中。{.lightSpeedIn}
-
 
 <slide class="bg-black-blue aligncenter"  >
 
 #### 持续部署(Continuous Deployment){.title .lightSpeedIn}
+
 !![](https://crm-public.hzdahongniang.com/FjU3j_JdPC1IRXJW1XCYT23u6xv0.jpg .lightSpeedIn)
 
-----
+---
 
 - 持续部署则是在持续交付的基础上，把部署到生产环境的过程自动化。
 - 与 `Jenkins` 不同的是，基于 Docker 的 CI/CD 每一步都运行在 Docker 容器中，所以理论上支持所有的编程语言。
-{.lightSpeedIn}
-
-
-
-<slide class="slide-top bg-black-blue" >
-
-#### GitLab Runner CI/CD 自动化构建 {.bounce .mb-20}
-
-
-- 概念{ .fadeInRight.delay-400 .pmb-20}
-    - GitLab CI/CD   
-    GitLab CI/CD 是GitLab Continuous Integration（Gitlab持续集成）的简称。GitLab 自GitLab 8.0开始提供了持续集成的功能，且对所有项目默认开启。只要在项目仓库的根目录添加.gitlab-ci.yml文件，并且配置了Runner（运行器），那么每一次push或者合并请求（Merge Request）都会触发CI Pipeline。
-    - GitLab Runner   
-        GitLab Runner是一个开源项目，可以运行在 GNU / Linux，macOS 和 Windows 操作系统上。每次push的时候 GitLab CI 会根据.gitlab-ci.yml配置文件运行你流水线（Pipeline）中各个阶段的任务（Job），并将结果发送回 GitLab。
-    - Pipelines   
-        Pipelines 中文称为流水线，是分阶段执行的构建任务。如：安装依赖、运行测试、打包、部署开发服务器、部署生产服务器等流程。每一次push或者Merge Request都会触发生成一条新的Pipeline。
-        !![](https://crm-public.hzdahongniang.com/FirBMoJwNmwQEp0qwVZTsXaW9AMC.png)
+  {.lightSpeedIn}
 
 <slide class="slide-top bg-black-blue" >
 
 #### GitLab Runner CI/CD 自动化构建 {.bounce .mb-20}
 
 - 概念{ .fadeInRight.delay-400 .pmb-20}
-    - .gitlab-ci.yml   
-        项目构建配置文件。默认需要存放于项目仓库的根目录，定义流水线的各个阶段，以及各个阶段中的若干作业（任务）。
-        ```yaml
-        stages:  # 声明构建步骤
-            - build
-            - deploy
-        build-h5-job:  # 构建的作业
-            stage: build
-            script:
-                - echo "Build the code..."  # 具体执行的内容
-        build-miniprogram-job:  # 构建的作业
-            stage: build
-            script:
-                - echo "Build the code..."  # 具体执行的内容
-        deploy-job:      
-            stage: deploy 
-            script:
-                - echo "Deploying application..."
-                - echo "Application successfully deployed."
-        ```
-    - Jobs   
+  - GitLab CI/CD  
+    GitLab CI/CD 是 GitLab Continuous Integration（Gitlab 持续集成）的简称。GitLab 自 GitLab 8.0 开始提供了持续集成的功能，且对所有项目默认开启。只要在项目仓库的根目录添加.gitlab-ci.yml 文件，并且配置了 Runner（运行器），那么每一次 push 或者合并请求（Merge Request）都会触发 CI Pipeline。
+  - GitLab Runner  
+     GitLab Runner 是一个开源项目，可以运行在 GNU / Linux，macOS 和 Windows 操作系统上。每次 push 的时候 GitLab CI 会根据.gitlab-ci.yml 配置文件运行你流水线（Pipeline）中各个阶段的任务（Job），并将结果发送回 GitLab。
+  - Pipelines  
+     Pipelines 中文称为流水线，是分阶段执行的构建任务。如：安装依赖、运行测试、打包、部署开发服务器、部署生产服务器等流程。每一次 push 或者 Merge Request 都会触发生成一条新的 Pipeline。
+    !![](https://crm-public.hzdahongniang.com/FirBMoJwNmwQEp0qwVZTsXaW9AMC.png)
+
+<slide class="slide-top bg-black-blue" >
+
+#### GitLab Runner CI/CD 自动化构建 {.bounce .mb-20}
+
+- 概念{ .fadeInRight.delay-400 .pmb-20}
+  - .gitlab-ci.yml  
+     项目构建配置文件。默认需要存放于项目仓库的根目录，定义流水线的各个阶段，以及各个阶段中的若干作业（任务）。
+    ```yaml
+    stages: # 声明构建步骤
+      - build
+      - deploy
+    build-h5-job: # 构建的作业
+      stage: build
+      script:
+        - echo "Build the code..." # 具体执行的内容
+    build-miniprogram-job: # 构建的作业
+      stage: build
+      script:
+        - echo "Build the code..." # 具体执行的内容
+    deploy-job:
+      stage: deploy
+      script:
+        - echo "Deploying application..."
+        - echo "Application successfully deployed."
+    ```
+  - Jobs  
     Jobs 表示构建的作业（或称之为任务），表示某个 Stage 里面执行的具体任务。我们可以在 Stages 里面定义多个 Jobs，这些 Jobs 会有以下特点：
-       - 相同 Stage 中的 Jobs 无执行顺序要求，会并行执行
-       - 相同 Stage 中的 Jobs 都执行成功时，该 Stage 才会成功
-       - 如果任何一个 Job 失败，那么该 Stage 失败，即该构建任务 (Pipeline) 也失败（可以在.gitlab-ci.yml文件中配置允许某 Job 可以失败，也算该 Stage 成功）
+    - 相同 Stage 中的 Jobs 无执行顺序要求，会并行执行
+    - 相同 Stage 中的 Jobs 都执行成功时，该 Stage 才会成功
+    - 如果任何一个 Job 失败，那么该 Stage 失败，即该构建任务 (Pipeline) 也失败（可以在.gitlab-ci.yml 文件中配置允许某 Job 可以失败，也算该 Stage 成功）
 
 <slide class="slide-top bg-black-blue" >
 
@@ -401,14 +398,14 @@ $ docker run --rm -it -p 8888:80 share_docker_demo
 :::column{.codeColumn}
 
 ```yaml{ onClick="currentCode(this)"}
-image: "$CI_REGISTRY/public_space/public_docker_image/miniprogram-ci:latest" 
+image: "$CI_REGISTRY/public_space/public_docker_image/miniprogram-ci:latest"
 
-stages:          
+stages:
   - preparation
   - build
   - deploy
 
-cache: 
+cache:
     - key:
         files:
         - yarn.lock
@@ -422,7 +419,7 @@ preparation:
   only:
     - beta
   script:
-    - yarn install --cache-folder .yarn-cache 
+    - yarn install --cache-folder .yarn-cache
   cache:
     - policy: pull-push
 ```
@@ -430,9 +427,9 @@ preparation:
 ---
 
 ```yaml{onClick="currentCode(this)"}
-h5: 
-  stage: build  
-  only: 
+h5:
+  stage: build
+  only:
     - beta
   script:
     - yarn build:h5
@@ -440,17 +437,17 @@ h5:
     expire_in: 1d
     paths:
       - dist
-  cache: 
+  cache:
     - policy: pull
 
-miniprogram: 
-  stage: build  
-  only: 
+miniprogram:
+  stage: build
+  only:
     - beta
   script:
     - yarn build:mp-weixin-docker
     - miniprogram-ci upload --pp "$CI_PROJECT_DIR/dist/dev/mp-weixin" --pkp "$PKP" --appid "wx509c385abb776467" --enable-es6 true --enable-minify true --uv "$CI_COMMIT_SHORT_SHA" --ud "$CI_COMMIT_DESCRIPTION"
-  cache: 
+  cache:
     - policy: pull
 ```
 
@@ -460,7 +457,7 @@ miniprogram:
 deploy:
   stage: deploy
   image: docker
-  only: 
+  only:
     - beta
   variables:
     # 这里定义了打包成功后的Docker镜像名称，镜像版本库地址：分支（tag）名称-commit的版本号
@@ -486,11 +483,12 @@ deploy:
 <!-- !![](https://crm-public.hzdahongniang.com/FgyxhPnyU6YrGUP5NZ-8nuU7YtsJ.jpeg .aligncenter) -->
 
 ##### 推荐文章：{.mb-20}
-* [Docker 从入门到实践](https://yeasy.gitbook.io/docker_practice/container) {.link}
-* [持续集成是什么？](http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html) {.link}
-* [如何实现前端工程的持续集成与持续部署？](https://www.zhihu.com/question/60194439) {.link}
-* [基于 GitLab CI 的前端工程CI/CD实践](https://github.com/giscafer/blog/issues/27) {.link}
-* [GitLab Docs](https://docs.gitlab.com) {.link}
+
+- [Docker 从入门到实践](https://yeasy.gitbook.io/docker_practice/container) {.link}
+- [持续集成是什么？](http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html) {.link}
+- [如何实现前端工程的持续集成与持续部署？](https://www.zhihu.com/question/60194439) {.link}
+- [基于 GitLab CI 的前端工程 CI/CD 实践](https://github.com/giscafer/blog/issues/27) {.link}
+- [GitLab Docs](https://docs.gitlab.com) {.link}
 
 :==TO BE CONTINUED==:{.end}
 
