@@ -1,3 +1,153 @@
 .mb-20 {
   margin-bottom: 2rem !important;
 }
+.flexColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.subtitle p {
+  margin-bottom: 0 !important;
+}
+.pmb-20 p {
+  margin-bottom: 2rem !important;
+}
+.pmb-20 p:last-child {
+  margin-bottom: 0 !important;
+}
+.mb-none {
+  margin-bottom: 0 !important;
+}
+.inline-code {
+  width: 100%;
+  font-size: 85%;
+}
+.extra {
+  display: none;
+}
+.extra.show {
+  display: inline-block;
+}
+/* .token.list {
+  color: #888;
+}
+.token.punctuation {
+  color: #888;
+} */
+.title {
+  font-size: 5rem;
+  margin-bottom: 5rem;
+}
+.centerBox {
+  font-size: 2rem;
+  width: 50%;
+  margin: 0 auto;
+}
+.link a {
+  color: #13daec !important;
+}
+
+.column.current {
+  width: 100% !important;
+  display: block;
+  animation: fadeIn 0.6s ease-in;
+  pointer-events: none;
+}
+
+.column.hide {
+  display: none !important;
+}
+
+.end {
+  margin-top: 150px;
+  display: flex;
+  justify-content: flex-end;
+  animation: twinkling 2.5s infinite ease-in-out;
+}
+.fontsize-60 {
+  display: block;
+  font-size: 60px;
+}
+pre[class*="language-"] {
+  position: relative;
+  background: rgb(40, 44, 52) !important;
+  padding-top: 30px;
+}
+pre[class*="language-"]::before {
+  pointer-events: auto;
+  content: "";
+  display: block;
+  width: 30%;
+  height: 15px;
+  background: url(https://crm-public.hzdahongniang.com/Fn21aGS0xEjdzew95wSVn4P78HOm.svg)
+    no-repeat;
+  background-size: contain;
+  background-color: rgb(40, 44, 52) !important;
+  position: absolute;
+  top: 8px;
+}
+table {
+  margin: 0 !important;
+  font-size: 14px !important;
+}
+thead th,
+th,
+td {
+  text-transform: none !important;
+}
+td,
+th,
+thead {
+  padding: 4px 10px !important;
+}
+thead,
+tbody {
+  line-height: 14px !important;
+}
+table td,
+th,
+thead {
+  border: 1px solid rgb(40, 44, 52) !important;
+}
+@keyframes twinkling {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.relative {
+  position: relative !important;
+}
+
+pre#subImageLayer {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+}
+pre#subImageLayer.show {
+  display: block !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+pre#multistageBuild {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+}
+pre#multistageBuild.show {
+  display: block !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
