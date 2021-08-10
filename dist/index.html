@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset=UTF-8><title>前端基于GitLab CI/CD 自动化构建分享 - By 西子湖畔</title><link rel=stylesheet href=https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://cdn.staticfile.org/prism/1.15.0/themes/prism.min.css><link rel=stylesheet href=https://cdn.staticfile.org/KaTeX/0.10.0-rc.1/katex.min.css><link rel=stylesheet href=https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css><link rel=stylesheet href=custom.css><link href=./css/chunk-vendors.4e4765ff.css rel=stylesheet></head><body><div><article id=webslides><section slide class="slide bg-black-blue aligncenter" image="https://crm-public.hzdahongniang.com/FpWRT9juO0iO9om-HxQX23GObr2o.jpg .dark"><span class="background dark" style="background-image:url('https://crm-public.hzdahongniang.com/FpWRT9juO0iO9om-HxQX23GObr2o.jpg')"></span><div class=wrap wrap=true><h1 class="text-landing text-shadow">前端基于GitLab CI/CD 自动化构建分享</h1><p class=text-intro>By hxz</p></div></section><section slide class="slide bg-black-blue aligncenter" :class=size-80><div class="wrap size-80" wrap=true><div class=content-center><h3>目录</h3><hr><ul><li class="animated fadeInUp">Docker 入门指南</li><li class="animated fadeInUp delay-400">Dockerfile 编写</li><li class="animated fadeInUp delay-800">GitLab Runner CI/CD 自动化构建</li></ul></div></div></section><section slide class="slide bg-black-blue slide-top"><div class=wrap wrap=true><h4>Docker是什么</h4><hr><p class="text-subtitle animated fadeInUp">Docker 是允许开发人员，系统管理员等轻松地在沙盒（又称容器）中部署其应用程序以在主机操作系统上运行的工具。</p><hr><h4 class="animated fadeInUp delay-400">为什么要用 Docker</h4><hr><p class="text-subtitle animated fadeInUp delay-800">使用Docker的主要好处是它可以打包代码及其所有依赖项，因此无论计算环境如何，应用程序都可以快速可靠地运行。</p><p class="text-subtitle animated fadeInUp delay-1200 mb-20">通过这种解耦，可以轻松且一致地部署基于容器的应用程序，而不管应用程序将部署在何处：云服务器，内部公司服务器或个人电脑。</p><ul><li>更高效的利用系统资源</li><li>更快速的启动时间</li><li>一致的运行环境</li><li>持续交付和部署</li><li>更轻松的迁移</li><li>更轻松的维护和扩展</li></ul></div></section></article></div><script src=https://cdn.staticfile.org/echarts/4.8.0/echarts.min.js></script><script>window.pluginsOptions = {}
+
+
+
+    window.webslidesOptions = {}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    let isPrintMode = false;
+    if(~location.search.indexOf('print-pdf')){
+        isPrintMode = true;
+        WebSlides.registerPlugin('scroll', function(){});
+    }
+    const wsOptions = {
+        loop: false
+    };
+    if(window.webslidesOptions){
+        for (let i in webslidesOptions){
+            if(webslidesOptions.hasOwnProperty(i)){
+                wsOptions[i] = webslidesOptions[i];
+            }
+        }
+    }
+    const ws = new WebSlides(wsOptions)
+
+    window.wsInstance = ws;
+    if(isPrintMode){
+        ws.slides.forEach(s=>s.show())
+    }
+}, false)</script><script src=./js/chunk-vendors.js></script><script src=./js/index.js></script></body></html>
